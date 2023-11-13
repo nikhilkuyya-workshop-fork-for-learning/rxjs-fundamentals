@@ -1,16 +1,33 @@
 import { from, of } from 'rxjs';
+import { TestScheduler } from 'rxjs/testing'
+
+
+
 
 describe('Exercise: Creating Observables', () => {
   describe(of, () => {
+
+    let testScheduler;
+
+    beforeEach(() => {
+        testScheduler = new TestScheduler((actual, expected) => {
+          console.log({actual,expected})
+            expect(actual).toEqual(expected);
+        });
+    });
     /**
      * Your mission: Create an observable using `of`, subscribe to it, putting
      * the values into the `results` array, and get the expectation below to
      * pass.
      */
-    it.skip('should create an observable out of a single value', () => {
-      const result = [];
+    it('should create an observable out of a single value', () => {
+      testScheduler.run((helpers) => {
+        const { expectObservable } = helpers;
+        const source$ = of(2);
+        const expected = '(a|)';
 
-      expect(result).toEqual([1]);
+        expectObservable(source$).toBe(expected, { a: 2 });
+      });
     });
 
     it.skip('should take a series of objects as arguments and create an observable', () => {
